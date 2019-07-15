@@ -1,0 +1,802 @@
+﻿<Page
+    x:Class="AlienRP_Lite.PlayerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Loaded="Page_Loaded" Loading="Page_Loading" SizeChanged="Page_SizeChanged">
+
+    <Page.Resources>
+        
+        <Style x:Name="arplink" TargetType="HyperlinkButton">
+            <Setter Property="Foreground" Value="{StaticResource AccentColor1}" />
+            <Setter Property="BorderThickness" Value="{ThemeResource HyperlinkButtonBorderThemeThickness}" />
+            <Setter Property="Padding" Value="0,0,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+            <Setter Property="UseSystemFocusVisuals" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="HyperlinkButton">
+                        <Grid x:Name="RootGrid">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                 Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor2}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="ContentPresenter"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Content="{TemplateBinding Content}"
+                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Padding="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            AutomationProperties.AccessibilityView="Raw"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ARPButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="PART_InnerBorder" Background="{StaticResource AccentColor1}" CornerRadius="7">
+                            <Grid>
+                                <TextBlock x:Name="text" Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource DarkFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="17" />
+                            </Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="PART_InnerBorder" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_InnerBorder"
+                                                   Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor2}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_InnerBorder"
+                                                   Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#B9B9BA" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="ARPLinkButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent">
+                            <TextBlock x:Name="PART_Text" Text="{TemplateBinding Content}" VerticalAlignment="Center" FontFamily="{StaticResource FontRegular}" Foreground="{StaticResource AccentColor1}" FontSize="{TemplateBinding FontSize}" HorizontalAlignment="Left" />
+                        
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="PART_InnerBorder" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_InnerBorder"
+                                                   Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor2}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        
+        <Style x:Key="ARPSoundBarStyle" TargetType="Slider">
+            <Setter Property="Background" Value="{ThemeResource SystemControlForegroundBaseMediumLowBrush}" />
+            <Setter Property="BorderThickness" Value="{ThemeResource SliderBorderThemeThickness}" />
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlHighlightAccentBrush}" />
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+            <Setter Property="ManipulationMode" Value="None" />
+            <Setter Property="UseSystemFocusVisuals" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid Margin="{TemplateBinding Padding}">
+                            <Grid.Resources>
+                                <Style TargetType="Thumb" x:Key="SliderThumbStyle">
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Background" Value="#EEEEEE" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="#EEEEEE"
+                      BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      CornerRadius="4" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HorizontalThumb"
+                                           Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#EEEEEE" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="VerticalThumb"
+                                           Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#EEEEEE" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="HeaderContentPresenter"
+                      x:DeferLoadStrategy="Lazy"
+                      Visibility="Collapsed"
+                      Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                      Margin="{ThemeResource SliderHeaderThemeMargin}"
+                      Content="{TemplateBinding Header}"
+                      ContentTemplate="{TemplateBinding HeaderTemplate}"
+                      FontWeight="{ThemeResource SliderHeaderThemeFontWeight}"
+                      TextWrapping="Wrap" />
+                            <Grid x:Name="SliderContainer" Background="Transparent" Grid.Row="1" Control.IsTemplateFocusTarget="True">
+                                <Grid x:Name="HorizontalTemplate" MinHeight="44">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="18" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="18" />
+                                    </Grid.RowDefinitions>
+                                    <Rectangle x:Name="HorizontalTrackRect"
+                      Fill="{StaticResource MainColor1}"
+                      Height="{ThemeResource SliderTrackThemeHeight}"
+                      Grid.Row="1"
+                      Grid.ColumnSpan="3" />
+                                    <Rectangle x:Name="HorizontalDecreaseRect"
+                      Fill="{StaticResource LightFontColor1}"
+                      Grid.Row="1" />
+                                    <TickBar x:Name="TopTickBar"
+                    Visibility="Collapsed"
+                    Fill="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                    Height="{ThemeResource SliderOutsideTickBarThemeHeight}"
+                    VerticalAlignment="Bottom"
+                    Margin="0,0,0,4"
+                    Grid.ColumnSpan="3" />
+                                    <TickBar x:Name="HorizontalInlineTickBar"
+                    Visibility="Collapsed"
+                    Fill="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    Height="{ThemeResource SliderTrackThemeHeight}"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="3" />
+                                    <TickBar x:Name="BottomTickBar"
+                    Visibility="Collapsed"
+                    Fill="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                    Height="{ThemeResource SliderOutsideTickBarThemeHeight}"
+                    VerticalAlignment="Top"
+                    Margin="0,4,0,0"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="3" />
+                                    <Thumb x:Name="HorizontalThumb"
+                  Background="{ThemeResource SystemControlForegroundAccentBrush}"
+                  Style="{StaticResource SliderThumbStyle}"
+                  DataContext="{TemplateBinding Value}"
+                  Height="24"
+                  Width="8"
+                  Grid.Row="0"
+                  Grid.RowSpan="3"
+                  Grid.Column="1"
+                  AutomationProperties.AccessibilityView="Raw" />
+                                </Grid>
+                                <Grid x:Name="VerticalTemplate" MinWidth="44" Visibility="Collapsed">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="18" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="18" />
+                                    </Grid.ColumnDefinitions>
+                                    <Rectangle x:Name="VerticalTrackRect"
+                      Fill="{StaticResource MainColor1}"
+                      Width="{ThemeResource SliderTrackThemeHeight}"
+                      Grid.Column="1"
+                      Grid.RowSpan="3" />
+                                    <Rectangle x:Name="VerticalDecreaseRect"
+                      Fill="{StaticResource LightFontColor1}"
+                      Grid.Column="1"
+                      Grid.Row="2" />
+                                    <TickBar x:Name="LeftTickBar"
+                    Visibility="Collapsed"
+                    Fill="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                    Width="{ThemeResource SliderOutsideTickBarThemeHeight}"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,4,0"
+                    Grid.RowSpan="3" />
+                                    <TickBar x:Name="VerticalInlineTickBar"
+                    Visibility="Collapsed"
+                    Fill="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    Width="{ThemeResource SliderTrackThemeHeight}"
+                    Grid.Column="1"
+                    Grid.RowSpan="3" />
+                                    <TickBar x:Name="RightTickBar"
+                    Visibility="Collapsed"
+                    Fill="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                    Width="{ThemeResource SliderOutsideTickBarThemeHeight}"
+                    HorizontalAlignment="Left"
+                    Margin="4,0,0,0"
+                    Grid.Column="2"
+                    Grid.RowSpan="3" />
+                                    <Thumb x:Name="VerticalThumb"
+                  Background="{ThemeResource SystemControlForegroundAccentBrush}"
+                  Style="{StaticResource SliderThumbStyle}"
+                  DataContext="{TemplateBinding Value}"
+                  Width="24"
+                  Height="8"
+                  Grid.Row="1"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="3"
+                  AutomationProperties.AccessibilityView="Raw"/>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ARPPlayButtonStyle" TargetType="ToggleButton">
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="border" Background="Transparent">
+                            <TextBlock x:Name="PART_Icon" Text="" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="{StaticResource FontIcon}" Foreground="{StaticResource AccentColor1}" FontSize="60"></TextBlock>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="border" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Icon"
+                                                   Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor2}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Icon"
+                                                   Storyboard.TargetProperty="Text">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+
+                                    <VisualState x:Name="CheckedPointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Icon"
+                                                   Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor2}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Icon"
+                                                   Storyboard.TargetProperty="Text">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Name="ARPScrollViewerStyle" TargetType="ScrollViewer">
+            <Setter Property="HorizontalScrollMode" Value="Auto" />
+            <Setter Property="VerticalScrollMode" Value="Auto" />
+            <Setter Property="IsHorizontalRailEnabled" Value="True" />
+            <Setter Property="IsVerticalRailEnabled" Value="True" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="ZoomMode" Value="Disabled" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="VerticalContentAlignment" Value="Top" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Visible" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="ScrollingIndicatorStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition From="MouseIndicator" To="NoIndicator">
+                                            <Storyboard>
+                                                <FadeOutThemeAnimation TargetName="ScrollBarSeparator" BeginTime="0:0:3" />
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="VerticalScrollBar"
+                                             Storyboard.TargetProperty="IndicatorMode">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:3">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <ScrollingIndicatorMode>None</ScrollingIndicatorMode>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HorizontalScrollBar"
+                                             Storyboard.TargetProperty="IndicatorMode">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:3">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <ScrollingIndicatorMode>None</ScrollingIndicatorMode>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualTransition>
+                                        <VisualTransition From="TouchIndicator" To="NoIndicator">
+                                            <Storyboard>
+                                                <FadeOutThemeAnimation TargetName="ScrollBarSeparator" />
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="VerticalScrollBar"
+                                             Storyboard.TargetProperty="IndicatorMode">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <ScrollingIndicatorMode>None</ScrollingIndicatorMode>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HorizontalScrollBar"
+                                             Storyboard.TargetProperty="IndicatorMode">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <ScrollingIndicatorMode>None</ScrollingIndicatorMode>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualTransition>
+                                    </VisualStateGroup.Transitions>
+
+                                    <VisualState x:Name="NoIndicator">
+                                        <Storyboard>
+                                            <FadeOutThemeAnimation TargetName="ScrollBarSeparator" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="TouchIndicator">
+                                        <Storyboard>
+                                            <FadeOutThemeAnimation TargetName="ScrollBarSeparator" />
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="VerticalScrollBar"
+                                           Storyboard.TargetProperty="IndicatorMode"
+                                           Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <ScrollingIndicatorMode>TouchIndicator</ScrollingIndicatorMode>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HorizontalScrollBar"
+                                           Storyboard.TargetProperty="IndicatorMode"
+                                           Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <ScrollingIndicatorMode>TouchIndicator</ScrollingIndicatorMode>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="MouseIndicator">
+                                        <Storyboard>
+                                            <FadeInThemeAnimation TargetName="ScrollBarSeparator" />
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="VerticalScrollBar"
+                                           Storyboard.TargetProperty="IndicatorMode"
+                                           Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <ScrollingIndicatorMode>MouseIndicator</ScrollingIndicatorMode>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HorizontalScrollBar"
+                                           Storyboard.TargetProperty="IndicatorMode"
+                                           Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <ScrollingIndicatorMode>MouseIndicator</ScrollingIndicatorMode>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid Background="{TemplateBinding Background}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ScrollContentPresenter x:Name="ScrollContentPresenter"
+                              Grid.RowSpan="2"
+                              Grid.ColumnSpan="2"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Margin="{TemplateBinding Padding}" />
+                                <ScrollBar x:Name="VerticalScrollBar"
+                 Grid.Column="1"
+                 IsTabStop="False"
+                 Maximum="{TemplateBinding ScrollableHeight}"
+                 Orientation="Vertical"
+                 Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                 Value="{TemplateBinding VerticalOffset}"
+                 ViewportSize="{TemplateBinding ViewportHeight}"
+                 HorizontalAlignment="Right" />
+                                <ScrollBar x:Name="HorizontalScrollBar"
+                 IsTabStop="False"
+                 Maximum="{TemplateBinding ScrollableWidth}"
+                 Orientation="Horizontal"
+                 Grid.Row="1"
+                 Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                 Value="{TemplateBinding HorizontalOffset}"
+                 ViewportSize="{TemplateBinding ViewportWidth}" />
+                                <Border x:Name="ScrollBarSeparator"
+              Grid.Row="1"
+              Grid.Column="1"
+              Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="{StaticResource MainColor2}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Height="81" x:Name="contentPanel" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <ToggleButton Click="PlayButtonClick" HorizontalAlignment="Center" Grid.Column="0" x:Name="playButton" Style="{StaticResource ARPPlayButtonStyle}"/>
+            <Slider Margin="0, 10, 0, 0" Orientation="Horizontal" ValueChanged="soundBar_ValueChanged" Maximum="100" Minimum="0" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="soundBar" Width="80" Grid.Column="2" Style="{StaticResource ARPSoundBarStyle}"/>
+
+            <Grid Margin="0, 5, 0, 5" Grid.Column="1" Visibility="Collapsed" x:Name="contentPanelV1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" x:Name="artistName" Text="Artist Name" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="14" />
+
+                <TextBlock Grid.Row="1" x:Name="trackName" Text="Track Name" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor2}" FontFamily="{StaticResource FontRegular}" FontSize="16" />
+
+                <Grid Grid.Row="2" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" x:Name="channelName" Text="" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="12" />
+                    <Rectangle Height="18" Margin="0, 2, 0, 0" Grid.Column="1" Fill="{StaticResource DarkFontColor1}" HorizontalAlignment="Center" Width="1" />
+                    <TextBlock Grid.Column="2" x:Name="quality" Text="AAC 128K" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="12" />
+                </Grid>
+
+            </Grid>
+
+            <Grid Margin="0, 5, 0, 5" Visibility="Collapsed" Grid.Column="1" x:Name="contentPanelV2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>
+
+                <Grid VerticalAlignment="Bottom" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" x:Name="artistName1" Text="Artist Name" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="18" />
+                    <TextBlock Grid.Column="1" Text="-" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource LightFontColor2}" FontFamily="{StaticResource FontRegular}" FontSize="18" />
+                    <TextBlock Grid.Column="2" x:Name="trackName1" Text="Track Name" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor2}" FontFamily="{StaticResource FontRegular}" FontSize="18" />
+                </Grid>
+
+                <Grid VerticalAlignment="Top" Grid.Row="1" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" x:Name="channelName1" Text="" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="14" />
+                    <Rectangle Height="18" Margin="0, 2, 0, 0" Grid.Column="1" Fill="{StaticResource DarkFontColor1}" HorizontalAlignment="Center" Width="1" />
+                    <TextBlock Grid.Column="2" x:Name="quality1" Text="AAC 128K" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="14" />
+                </Grid>
+
+            </Grid>
+
+            <Grid Margin="0, 5, 30, 5" Visibility="Collapsed" Grid.Column="1" x:Name="contentPanelV3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Margin="0, 0, 30, 0" HorizontalAlignment="Left" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" x:Name="artistName2" Text="Artist Name" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="20" />
+                    <TextBlock Grid.Column="1" Text="-" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource LightFontColor2}" FontFamily="{StaticResource FontRegular}" FontSize="20" />
+                    <TextBlock Grid.Column="2" x:Name="trackName2" Text="Track Name" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor2}" FontFamily="{StaticResource FontRegular}" FontSize="20" />
+                </Grid>
+
+                <Grid HorizontalAlignment="Right" Grid.Column="1" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" x:Name="channelName2" Text="" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="16" />
+                    <Rectangle Margin="0, 4, 0, 0" Grid.Column="1" Fill="{StaticResource DarkFontColor1}" HorizontalAlignment="Center" Width="1" Height="16" />
+                    <TextBlock Grid.Column="2" x:Name="quality2" Text="AAC 128K" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="16" />
+                </Grid>
+
+            </Grid>
+
+            <Grid Background="{StaticResource MainColor2}" Visibility="Collapsed" Grid.Column="1" x:Name="errorGrid">
+                <TextBlock x:Name="errorText" Text="An error has occured. Please try again" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource ErrorColor}" FontFamily="{StaticResource FontRegular}" FontSize="16" />
+            </Grid>
+
+            <Rectangle Grid.Row="1" Grid.Column="0" Height="1" Fill="{StaticResource MainColor1}"/>
+            <Rectangle Grid.Row="1" Grid.Column="1" Height="1" Fill="{StaticResource MainColor1}"/>
+            <Rectangle Grid.Row="1" Grid.Column="2" Height="1" Fill="{StaticResource MainColor1}"/>
+            <!--<Grid Height="80" Visibility="Visible" Grid.Column="0" Grid.Row="0" x:Name="contentPanelV1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="8*"/>
+                </Grid.ColumnDefinitions>
+
+                <ToggleButton Click="PlayButtonClick" HorizontalAlignment="Center" Grid.Column="0" x:Name="playButton" Style="{StaticResource ARPPlayButtonStyle}"/>
+
+                
+                
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" x:Name="artistName" Text="Artist" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="14" />
+
+                    <TextBlock Grid.Row="1" x:Name="trackName" Text="Artist" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor2}" FontFamily="{StaticResource FontRegular}" FontSize="16" />
+
+                    <Grid Grid.Row="2" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" x:Name="channelName" Text="Hardcore" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="12" />
+                        <Rectangle Grid.Column="1" Fill="{StaticResource DarkFontColor1}" HorizontalAlignment="Center" Width="1" />
+                        <TextBlock Grid.Column="2" x:Name="quality" Text="AAC 128K" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="12" />
+                    </Grid>
+
+                </Grid>
+
+                <Slider Orientation="Vertical" ValueChanged="soundBar_ValueChanged" Maximum="100" Minimum="0" Value="50" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="soundBar" Height="60" Grid.Column="2" Style="{StaticResource ARPSoundBarStyle}"/>
+
+            </Grid>
+
+            <Grid Height="60" Visibility="Collapsed" Grid.Row="0" x:Name="contentPanelV2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+
+                <ToggleButton Click="PlayButtonClick1" HorizontalAlignment="Center" Grid.Column="0" x:Name="playButton1" Style="{StaticResource ARPPlayButtonStyle}"/>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="5*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid VerticalAlignment="Bottom" Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" x:Name="artistName1" Text="Artist" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="16" />
+                        <TextBlock Grid.Column="1" Text="-" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource LightFontColor2}" FontFamily="{StaticResource FontRegular}" FontSize="16" />
+                        <TextBlock Grid.Column="2" x:Name="trackName1" Text="Artist" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor2}" FontFamily="{StaticResource FontRegular}" FontSize="16" />
+                    </Grid>
+                    
+                    <Grid VerticalAlignment="Top" Grid.Row="1" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" x:Name="channelName1" Text="Hardcore" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="12" />
+                        <Rectangle Grid.Column="1" Fill="{StaticResource DarkFontColor1}" HorizontalAlignment="Center" Width="1" />
+                        <TextBlock Grid.Column="2" x:Name="quality1" Text="AAC 128K" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="12" />
+                    </Grid>
+
+                </Grid>
+
+                <Slider Margin="0, 10, 0, 0" Orientation="Horizontal" ValueChanged="soundBar_ValueChanged1" Maximum="100" Minimum="0" Value="50" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="soundBar1" Width="60" Grid.Column="2" Style="{StaticResource ARPSoundBarStyle}"/>
+
+            </Grid>
+
+            <Grid Height="60" Visibility="Collapsed" Grid.Row="0" x:Name="contentPanelV3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+
+                <ToggleButton Click="PlayButtonClick2" HorizontalAlignment="Center" Grid.Column="0" x:Name="playButton2" Style="{StaticResource ARPPlayButtonStyle}"/>
+
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid HorizontalAlignment="Left" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" x:Name="artistName2" Text="Artist" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="16" />
+                        <TextBlock Grid.Column="1" Text="-" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource LightFontColor2}" FontFamily="{StaticResource FontRegular}" FontSize="16" />
+                        <TextBlock Grid.Column="2" x:Name="trackName2" Text="Artist" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor2}" FontFamily="{StaticResource FontRegular}" FontSize="16" />
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Right" Grid.Column="1" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" x:Name="channelName2" Text="Hardcore" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="14" />
+                        <Rectangle Margin="0, 4, 0, 0" Grid.Column="1" Fill="{StaticResource DarkFontColor1}" HorizontalAlignment="Center" Width="1" Height="16" />
+                        <TextBlock Grid.Column="2" x:Name="quality2" Text="AAC 128K" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="14" />
+                    </Grid>
+
+                </Grid>
+
+                <Slider Margin="0, 10, 0, 0" Orientation="Horizontal" ValueChanged="soundBar_ValueChanged2" Maximum="100" Minimum="0" Value="50" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="soundBar2" Width="60" Grid.Column="2" Style="{StaticResource ARPSoundBarStyle}"/>
+
+            </Grid>-->
+        </Grid>
+
+        <!--<StackPanel Visibility="Collapsed" Grid.Row="0" x:Name="contentPanel">
+
+            <Grid Height="50" Grid.Row="0" x:Name="trackInfoGrid">
+                <Grid HorizontalAlignment="Center" x:Name="textGrid" Margin="0, 5, 0, 5">
+                    <Grid Grid.Row="2" Margin="10, 0, 0, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" x:Name="channelName" Text="Hardcore" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="24" />
+                        <Rectangle Grid.Column="1" Fill="{StaticResource DarkFontColor1}" HorizontalAlignment="Center" Width="1" />
+                        <TextBlock Grid.Column="2" x:Name="quality" Text="128K" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource LightFontColor1}" FontFamily="{StaticResource FontRegular}" FontSize="24" />
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <Grid Height="50" Margin="10, 5, 10, 5" Grid.Row="1" x:Name="playerControlGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <ToggleButton Click="PlayButtonClick" HorizontalAlignment="Center" Grid.Column="0" x:Name="playButton" Style="{StaticResource ARPPlayButtonStyle}"/>
+
+                <Slider ValueChanged="soundBar_ValueChanged" Maximum="100" Minimum="0" Value="50" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="soundBar" Width="100" Grid.Column="1" Style="{StaticResource ARPSoundBarStyle}"/>
+            </Grid>
+        </StackPanel>-->
+
+        <Grid Grid.Row="1" x:Name="channelsGrid" Visibility="Visible">
+            <ScrollViewer x:Name="channelsScrollViewer" Grid.Row="0" Style="{StaticResource ARPScrollViewerStyle}" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+
+                <VariableSizedWrapGrid HorizontalAlignment="Stretch" Orientation="Horizontal" ItemHeight="120" x:Name="channelsPanel" SizeChanged="channelsPanel_SizeChanged">
+
+                </VariableSizedWrapGrid>
+
+            </ScrollViewer>
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="errorChannelsGrid" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" x:Name="errorName" TextWrapping="Wrap" Text="An error has occured. Please try again" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="{StaticResource ErrorColor}" FontFamily="{StaticResource FontRegular}" FontSize="24" />
+            <Button Click="tryAgainButton_Click" x:Name="tryAgainButton" Width="100" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, 20, 0, 0" Content="Try again" Grid.Row="1" Style="{StaticResource ARPButtonStyle}"/>
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="loadingChannelsGrid" Visibility="Collapsed">
+            <TextBlock Grid.Row="0" x:Name="loadingName" TextWrapping="Wrap" Text="Loading..." VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource AccentColor1}" FontFamily="{StaticResource FontRegular}" FontSize="24" />
+        </Grid>
+    </Grid>
+</Page>
